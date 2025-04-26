@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { FiChevronLeft, FiChevronRight, FiX } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const PortfolioCarousel = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
 
   const nextSlide = () => {
@@ -16,14 +15,6 @@ const PortfolioCarousel = ({ images }) => {
     setCurrentIndex((prevIndex) => 
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
-  };
-
-  const handleImageClick = () => {
-    setIsFullscreen(true);
-  };
-
-  const handleCloseFullscreen = () => {
-    setIsFullscreen(false);
   };
 
   const handleTouchStart = (e) => {
@@ -48,20 +39,16 @@ const PortfolioCarousel = ({ images }) => {
 
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (isFullscreen) {
-        if (e.key === 'Escape') {
-          handleCloseFullscreen();
-        } else if (e.key === 'ArrowRight') {
-          nextSlide();
-        } else if (e.key === 'ArrowLeft') {
-          prevSlide();
-        }
+      if (e.key === 'ArrowRight') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        prevSlide();
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [isFullscreen]);
+  }, []);
 
   return (
     <div className="portfolio-carousel">
@@ -77,7 +64,6 @@ const PortfolioCarousel = ({ images }) => {
               src={image}
               alt={`Portfolio item ${index + 1}`}
               className="carousel-image"
-              onClick={handleImageClick}
             />
           </div>
         ))}
@@ -99,20 +85,6 @@ const PortfolioCarousel = ({ images }) => {
           />
         ))}
       </div>
-
-      {isFullscreen && (
-        <div className="fullscreen-modal active" onClick={handleCloseFullscreen}>
-          <img
-            src={images[currentIndex]}
-            alt={`Portfolio item ${currentIndex + 1}`}
-            className="fullscreen-image"
-            onClick={(e) => e.stopPropagation()}
-          />
-          <button className="close-modal" onClick={handleCloseFullscreen}>
-            <FiX size={24} />
-          </button>
-        </div>
-      )}
     </div>
   );
 };
