@@ -64,6 +64,7 @@ const PortfolioCarousel = ({ images }) => {
               src={image}
               alt={`Portfolio item ${index + 1}`}
               className="carousel-image"
+              style={{ cursor: 'default' }}
             />
           </div>
         ))}
